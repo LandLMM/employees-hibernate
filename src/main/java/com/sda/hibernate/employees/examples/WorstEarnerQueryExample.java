@@ -6,18 +6,20 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class TopEarnerQueryExample {
+public class WorstEarnerQueryExample {
 
-    //zwraca ludzi ktorzy zarabiaja najwiecej w poszczegolnych dzialach
     public static void main(String[] args) {
+
         try (SessionFactory factory = new Configuration().configure().buildSessionFactory()) {
             try (Session session = factory.openSession()) {
-                Query<Employee> q2 = session.createQuery("SELECT emp1 FROM Employee emp1 " +
-                        "WHERE emp1.salary = (SELECT max(emp2.salary) FROM Department dept JOIN dept.employees emp2 " +
-                        "WHERE dept = emp1.department)");
-                q2.getResultList().stream().map((emp) -> emp.getFirstName() + " " + emp.getLastName()) // Lambda expression
+
+                Query<Employee> q = session.createQuery("SELECT emp FROM Employee emp " +
+                        "WHERE emp.salary = (SELECT min(emp2.salary) FROM Department dept JOIN dept.employees emp2 " +
+                        "WHERE dept = emp.department)");
+                q.getResultList().stream().map((emp) -> emp.getFirstName() + " " + emp.getLastName())
                         .forEach(System.out::println);
             }
+            factory.close(); // nalezy zamknac dzialanie programu, poniewaz bedzie nadal dzialal w tle
         }
     }
 }

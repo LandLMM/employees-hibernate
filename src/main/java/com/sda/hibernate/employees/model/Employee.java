@@ -1,35 +1,43 @@
 package com.sda.hibernate.employees.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="employees")
+@Table(name = "employees")
 public class Employee {
 
     @Id
     @GeneratedValue
-    @Column(name="emp_id")
+    @Column(name = "emp_id")
     private Integer empId;
 
-    @Column(name="first_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name="last_name")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name="salary")
+    @Column(name = "salary")
     private Float salary;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="dept_id")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @Cascade(value = org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+
+    //@ManyToMany(value = org.hibernate.annotations.CascadeType.PERSIST)
+    @JoinColumn(name = "dept_id")
     private Department department;
 
+    // CascadeType
     @ManyToMany(mappedBy = "employees", cascade = CascadeType.ALL)
     private Set<Project> projects = new HashSet<>();
 
-    public Employee() { }
+    public Employee() {
+    }
 
     public Employee(String firstName, String lastName, Float salary, Department department) {
         this.firstName = firstName;

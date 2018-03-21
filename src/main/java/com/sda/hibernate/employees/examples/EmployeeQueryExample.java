@@ -14,7 +14,7 @@ public class EmployeeQueryExample {
         try (SessionFactory factory = new Configuration().configure().buildSessionFactory()) {
             try (Session session = factory.openSession()) {
                 Query q = session.createQuery("FROM Employee");
-                List<Employee> result = q.getResultList();
+                List<Employee> result = q.getResultList(); // zwraca liste pracownikow
                 result.stream().map((emp) -> emp.getFirstName() + " " + emp.getLastName() + " " + emp.getDepartment().getDeptName()).forEach(System.out::println);
             }
         }

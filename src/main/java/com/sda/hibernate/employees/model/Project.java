@@ -16,10 +16,10 @@ public class Project {
     @Column(name="proj_name")
     private String projName;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.PERSIST)
     @JoinTable(name="employee_projects",
     joinColumns = {@JoinColumn(name="proj_id")},
-    inverseJoinColumns = {@JoinColumn(name="emp_id")})
+    inverseJoinColumns = {@JoinColumn(name="emp_id")}) // Odpowiedzialne za mapowanie 2 projektu
     private Set<Employee> employees = new HashSet<>();
 
     public Project() { }
